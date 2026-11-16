@@ -1,23 +1,54 @@
-import { StyleSheet, Text } from "react-native";
-import { Link } from "expo-router";
+import { StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { Link } from 'expo-router'
+import { useState } from 'react'
+import { useUser } from '../../hooks/useUser'
 
 //themed components
+import ThemedTextInput from '../../components/ThemedTextInput'
 import ThemedButton from '../../components/ThemedButton'
-import ThemedView from "../../components/ThemedView";
-import ThemedText from "../../components/ThemedText";
-import Spacer from "../../components/Spacer";
+import ThemedView from '../../components/ThemedView'
+import ThemedText from '../../components/ThemedText'
+import Spacer from '../../components/Spacer'
 
 const Register = () => {
-    const handleSubmit = () => {
-        console.log('register form submitted')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const { register } = useUser()
+
+
+    const handleSubmit = async () => {
+      try {
+        await register(email, password)
+      } catch (error) {
+        
+      }
     }
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
     <ThemedView style={styles.container}>
       <Spacer />
       <ThemedText title={true} style={styles.title}>
         Register for an account
       </ThemedText>
+
+        < ThemedTextInput
+            style={{ width: '80%', marginBottom: 20 }}
+            placeholder="Email" 
+            keyboardType="email-address"
+            onChangeText={setEmail}
+            value={email}
+        />
+
+        < ThemedTextInput
+            style={{ width: '80%', marginBottom: 20 }}
+            placeholder="Password" 
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry
+        />
 
       <ThemedButton onPress={handleSubmit}>
         <Text style={{ color: "#f2f2f2" }}>Register</Text>
@@ -28,8 +59,9 @@ const Register = () => {
         <ThemedText style={{ textAlign: "center" }}>Login instead</ThemedText>
       </Link>
     </ThemedView>
-  );
-};
+    </TouchableWithoutFeedback>
+  )
+}
 
 export default Register;
 
