@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { account } from '../lib/appwrite'
 import { ID } from 'react-native-appwrite'
 
@@ -52,4 +52,8 @@ export function UserProvider({ children }){
             { children }
         </UserContext.Provider>
     )
+}
+
+export function useUser() {
+    return useContext(UserContext)
 }
